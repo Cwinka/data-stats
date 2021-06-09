@@ -1,0 +1,15 @@
+@import "../../styles/vars.scss";
+
+.details {
+    width: 100%;
+    padding: 0 10px;
+    margin-right: $margin-left-from-nav;
+    ul {
+        list-style: none;
+    }
+    li {
+        display:inline-block;
+        margin: 0 5px;
+    }
+}
+

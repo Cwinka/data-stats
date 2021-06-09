@@ -1,0 +1,28 @@
+@import "./vars.scss";
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+  
+  #root {
+    display: flex;
+  }
+  .main {
+    width: 100%;
+    &-panels{
+      margin-left: $nav-panel-width + $margin-left-from-nav;
+      margin-top: $master-panel-height + $margin-top-from-nav;
+      margin-right: 20px;
+    }
+  }
