@@ -18,7 +18,6 @@ dist/
 /.aws
 /*.env
 .idea
-index.html
 .Python
 /debug
 develop-eggs/

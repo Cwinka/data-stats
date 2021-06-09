@@ -1,6 +1,6 @@
 version: "3.3"
 
-services: 
+services:
     redis:
         image: redis:alpine
         networks:
@@ -14,14 +14,14 @@ services:
             - redis
         networks:
             - back
-        environment: 
-            app_path: ../APP
+        environment:
+            app_path: ./backend
         command: /usr/local/bin/gunicorn -w 2 -k uvicorn.workers.UvicornH11Worker -b :5000 main:app --reload
     back-proxy:
         image: nginx:alpine
         depends_on:
             - backend
-        volumes: 
+        volumes:
             - "./nginx:/etc/nginx"
         environment:
             LISTEN_PORT: 5353
@@ -35,15 +35,15 @@ services:
                 '< /etc/nginx/nginx.conf.template
                 > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
     frontend:
-        build: 
+        build:
             context: ./frontend
             dockerfile: ./app.dockerfile
         image: front:latest
         depends_on: 
             - backend
-        networks: 
+        networks:
             - front
-        environment: 
+        environment:
             API_VER: "api_v0"
             API_URL: "http://back-proxy:5353"
 networks: 

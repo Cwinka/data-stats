@@ -10,7 +10,7 @@ import {DataBox} from '../../pages/analitics'
 import {MyAccount} from '../../pages/myaccount'
 import {ErrorPage} from "../../pages/error"
 import {Nav} from "../nav"
-import {MasterPanel} from "../masterPanel"
+import {MasterPanel} from "../masterpanel"
 import {Loader} from '../loader'
 
 import {TryLoginWithCookie} from "../../helpers/tryLogin"

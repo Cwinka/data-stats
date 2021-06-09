@@ -3,11 +3,15 @@ ARG app_path
 
 COPY $app_path /app
 WORKDIR /app
-COPY ./dist/docker/install.sh /app
-COPY ./dist/docker/lin-reqs.txt /app
+
+COPY ./install/install.sh /app
+COPY ./install/lin-reqs.txt /app
+
 RUN chmod +x install.sh
 RUN . ./install.sh
-COPY ./dist/docker/start.sh /start.sh
+
+COPY ./install/start.sh /start.sh
+
 RUN chmod +x /start.sh
 
 CMD ["/start.sh"]
