@@ -1,6 +1,6 @@
 export const MAX_FILE_SIZE = 20000000; // 20Mb
-export const API_URL = process.env.API_URL;
-export const API_VER = process.env.API_VER;
+export const API_URL = "http://84.201.136.86:5353";
+export const API_VER = "api_v0"
 export const ACCESS_TOKEN_NAME = 'ac_+';
 export const ACCESS_TOKEN_TYPE_NAME = 'ac_+t';
 export const MAX_ALL_FILES_SIZE= 30000000 //bytes

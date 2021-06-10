@@ -31,10 +31,6 @@ TO_USERS_DATA_DIR: str = os.path.join(ROOT_DIR, USERS_DIR)
 MAX_FILENAME_LENGTH = config("MAX_FILENAME_LENGTH", 30, cast=int) # caracters
 """ Max number of characters in directory name. It's used to create a directory for user """
 
-TRAINED_MODELS_DIR: str = config("TRAINED_MODELS_DIR", 'trainerd_models', cast=str)
-""" Directory where all users trained models are stored
-    This directory is inside USER_DATA_DIR
-"""
 MAX_ALL_FILES_SIZE: int = config('MAX_ALL_FILES_SIZE', cast=int) # in bytes
 
 DIRNAME_LENGTH: int = 20 # caracters
@@ -78,10 +74,13 @@ app = FastAPI(
     description="API provides functins to visualize data",
     version=0.1,
     openapi_tags=tags_metadata,
+    redoc_url=None,
+    docs_url=None,
 )
 
 ORIGINS: List[str] = [
     "http://localhost:3000",
+    "http://84.201.136.86"
 ]
 
 app.add_middleware(
@@ -91,10 +90,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# app.add_middleware(
-#     TrustedHostMiddleware, allowed_hosts=["84.201.136.86"]
-# )
+app.add_middleware(
+    TrustedHostMiddleware, allowed_hosts=["84.201.136.86", "localhost", "127.0.0.1"]
+)
 
+REDIS_FILE_EXPIRE_SEC:int = config("REDIS_FILE_EXPIRE_SEC", cast=int)
+REDIS_HOST: str = config("REDIS_HOST", cast=str)
+REDIS_PORT:int = config("REDIS_PORT", cast=int)
 
 SECRET_KEY = config("SECRET_KEY", cast=str)
 ALGORITHM = config("ALGORITHM", cast=str)

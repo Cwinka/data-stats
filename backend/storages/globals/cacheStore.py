@@ -1,11 +1,8 @@
 from typing import Union
 import redis
-from decouple import config
 from models.users import BaseUser
+from config import REDIS_FILE_EXPIRE_SEC, REDIS_HOST, REDIS_PORT
 
-REDIS_FILE_EXPIRE_SEC:int = config("REDIS_FILE_EXPIRE_SEC", cast=int)
-REDIS_HOST: str = config("REDIS_HOST", cast=str)
-REDIS_PORT:int = config("REDIS_PORT", cast=int)
 
 class Redis:
     def __init__(self) -> None:
