@@ -1,17 +1,21 @@
 
 from config import app
 from settings import *
-from apps.users import urls
-from apps.tokens import urls
 from apps.cloud_files import urls
 from apps.graphs import urls
 from apps.statistics import urls
+from apps.simple_ai import urls
 
+from models.users.models import BaseUser
 from fastapi import Depends
+from settings import Auth
+from storages.userStore import UserStore
 
-@app.get("/hello")
-async def hello(user = Depends(Auth.getBaseUserIfTokenValid)):
-    return "Hi honey"
+@app.get("/user/info")
+async def user_info(user: BaseUser = Depends(Auth.getBaseUserIfTokenValid)):
+    used, total = await UserStore(user).free_space_left()
+    return {"detail": {"used": used, "total": total}}
+
 
 if __name__ == "__main__":
     import uvicorn

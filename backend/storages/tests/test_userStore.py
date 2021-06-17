@@ -1,8 +1,8 @@
-from io import StringIO
 import sys, os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__name__)))) #3 level above
+BASE_DIR = os.path.dirname(os.path.abspath(__name__))
 sys.path.append(BASE_DIR)
 
+from io import BytesIO, StringIO
 from storages.userStore import UserStore
 from models.users.models import BaseUser
 import asyncio
@@ -11,10 +11,10 @@ TEST_USER = BaseUser(**{"dp": "TEST", "username": "joehndoe"})
 store = UserStore(TEST_USER)
 
 TEST_FILENAME = "unbelivable.csv"
-FILE_CONTENT ="1,2,3,4,5\nm,m,m,m,m,m"
+FILE_CONTENT =b"1,2,3,4,5\nm,m,m,m,m,m"
 
 def test_file_upload():
-    file = bytes(FILE_CONTENT, encoding="utf-8")
+    file = BytesIO(FILE_CONTENT)
     res = asyncio.run(store.upload_file(file, TEST_FILENAME))
     assert type(res) == str
     assert res == TEST_FILENAME
@@ -32,23 +32,25 @@ def test_free_space_left():
     assert overall*2 > overall, "Unxpected behavior"
 
 def test_file_exists():
+    file = BytesIO(FILE_CONTENT)
+    asyncio.run(store.upload_file(file, TEST_FILENAME))
+
     doesExist = asyncio.run(store.file_exists(TEST_FILENAME))
+    
     assert doesExist == True
 
 def test_fetch_file():
     file = asyncio.run(store.fetch_file(TEST_FILENAME))
     assert type(file) == StringIO
-    assert file.read() == FILE_CONTENT, "Some information lost!"
-
-def test_fetch_file_in_bytes():
-    file = asyncio.run(store.fetch_file_in_bytes(TEST_FILENAME))
-    assert type(file) == bytes
-    assert file == bytes(FILE_CONTENT, encoding="utf-8"), "Some information lost!"
+    assert file.read() == FILE_CONTENT.decode("utf8"), "Some information lost!"
 
 def test_delete_file():
+    file = BytesIO(FILE_CONTENT)
+    asyncio.run(store.upload_file(file, TEST_FILENAME))
+
     res = asyncio.run(store.delete_file(TEST_FILENAME))
     assert res == TEST_FILENAME
 
 def test_file_does_not_exists():
-    noExist = asyncio.run(store.file_exists(TEST_FILENAME))
-    assert noExist == False 
+    exists = asyncio.run(store.file_exists(TEST_FILENAME[:3]))
+    assert exists == False 

@@ -1,0 +1,13 @@
+.analitics {
+    display: flex;
+    justify-content: space-between;
+  }
+.main {
+    flex: 4 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+.rest {
+  flex: 1 0;
+}

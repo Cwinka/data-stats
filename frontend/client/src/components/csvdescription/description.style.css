@@ -1,0 +1,9 @@
+.wrapper_scr {
+    overflow-x: scroll;
+    background-color: snow;
+    margin-top: 10px;
+    border-radius: 7px;
+}
+.focused {
+    background-color: rgb(64, 137, 146);
+}

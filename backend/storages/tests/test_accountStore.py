@@ -1,6 +1,6 @@
 
 import sys, os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__name__)))) #3 level above
+BASE_DIR = os.path.dirname(os.path.abspath(__name__))
 sys.path.append(BASE_DIR)
 
 from models.users.forms import NewUser
@@ -22,11 +22,6 @@ TEST_USER = NewUser(
         client_secret = None)
 TEST_USER.setDPandPSW(dp="TEST", psw="randomhashedpassword")
 
-def test_create_user():
-    user = asyncio.run(accounts.create_user(TEST_USER))
-    assert user.dp == TEST_USER.dp
-    assert user.username == TEST_USER.username
-    assert type(user) == UserInDB
 
 def test_get_user():
     user = asyncio.run(accounts.fetch_user(TEST_USER.username))

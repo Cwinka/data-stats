@@ -26,11 +26,14 @@ services:
         environment:
             LISTEN_PORT: 5353
             PROXY_PASS: "http://backend:5000"
+            MAX_BODY_SIZE: "30M"
         networks:
             - back
+        ports: 
+            - "5353:5353"
         command: >
                 /bin/sh -c "envsubst '
-                $${LISTEN_PORT} $${PROXY_PASS}
+                $${LISTEN_PORT} $${PROXY_PASS} $${MAX_BODY_SIZE}
                 '< /etc/nginx/nginx.conf.template
                 > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
     frontend:
@@ -51,13 +54,14 @@ services:
         environment:
             LISTEN_PORT: 80
             PROXY_PASS: "http://frontend:3000"
+            MAX_BODY_SIZE: "30M"
         networks:
             - front
         ports: 
             - "80:80"
         command: >
             /bin/sh -c "envsubst '
-            $${LISTEN_PORT} $${PROXY_PASS}
+            $${LISTEN_PORT} $${PROXY_PASS} $${MAX_BODY_SIZE}
             '< /etc/nginx/nginx.conf.template
             > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
 

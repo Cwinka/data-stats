@@ -1,7 +1,8 @@
 import csv
+import sys, ctypes as ct
 
 from config import app
-from fastapi import Depends, File, UploadFile
+from fastapi import Depends, File, UploadFile, HTTPException
 from settings import Auth
 from storages.userStore import UserStore
 from utils_ import ValidFilenamesOrHttpException
@@ -56,11 +57,14 @@ async def get_first_ten_rows(filename: str, user: BaseUser = Depends(Auth.getBas
     csv_data = csv.reader(file, delimiter=",")
     ten = []
     c = 0
-    for row in csv_data:
-        if c >10:
-            break
-        ten.append(row)
-        c+=1
+    try:
+        for row in csv_data:
+            if c >10:
+                break
+            ten.append(row)
+            c+=1
+    except:
+        raise HTTPException(400, "Too big string in data")
     return {"detail": ten}
 
 app.include_router(csv_router)

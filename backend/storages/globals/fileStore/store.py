@@ -1,32 +1,31 @@
 from io import StringIO
-from typing import IO, Tuple
+from typing import IO, Tuple, Union
 
 from models.users import BaseUser
 
-from ..cacheStore import Redis
+from .cacheFile import cache
 from .cloud import Cloud
+from .local import Local
 
 
 class Files:
     def __init__(self) -> None:
-        self.cache = Redis()
-        self.file_storage = Cloud()
+        self.file_storage = self._init_file_storage()
+
+    def _init_file_storage(self) -> Union[Cloud, Local]:
+        cloud = Cloud()
+        if cloud.ping():
+            return cloud
+        return Local()
 
     async def fetch_one(self, user: BaseUser, filename:str) -> StringIO:
         """ Fetches specified user file """
-        file_ = self.cache.get_file(user, filename)
-        if not file_:
-            _, file_ = await self.file_storage.get_file(user, filename)
-            self.cache.cache_file(user, filename, file_)
-        return StringIO(file_.decode(encoding="utf8"))
-
-    async def fetch_one_bytes(self, user: BaseUser, filename:str) -> bytes:
-        """ Fetches specified user file """
-        file_ = self.cache.get_file(user, filename)
-        if not file_:
-            _, file_ = await self.file_storage.get_file(user, filename)
-            self.cache.cache_file(user, filename, file_)
-        return file_
+        in_cache = cache.get_file(user, filename)
+        if not in_cache:
+            _, file = await self.file_storage.get_file(user, filename)
+            cache.cache_file(user, filename, file)
+            return StringIO(file.decode(encoding="utf-8-sig"))
+        return StringIO(in_cache.decode(encoding="utf-8-sig"))
 
     async def upload(self, user: BaseUser, file: IO, filename: str) -> str:
         """ Uploads incoming user file """
@@ -34,7 +33,7 @@ class Files:
 
     async def delete(self, user: BaseUser, filename: str) -> str:
         """ Deletes specified user file """
-        return await self.file_storage.del_file(user, filename)
+        return await self.file_storage.delete_file(user, filename)
 
     async def exists(self, user: BaseUser, filename:str) -> bool:
         """ Exists specified user file or not """

@@ -11,16 +11,16 @@ from .desc import describe as describ
 from .routers import statistic_router
 
 
-@statistic_router.post(f"/corr", )
+@statistic_router.post(f"/corr")
 async def correlation(fp: FilePointer, settings: BaseGraph, user: BaseUser = Depends(Auth.getBaseUserIfTokenValid)):
     ValidFilenamesOrHttpException([fp.filename])
     res = await corr(user, fp, settings)
-    return {'data': res}
+    return {'corr': res}
 
-@statistic_router.post(f"/describe",)
+@statistic_router.post(f"/describe")
 async def describe(fp: FilePointer, user: BaseUser = Depends(Auth.getBaseUserIfTokenValid)):
     ValidFilenamesOrHttpException([fp.filename])
     res = await describ(user, fp)
-    return {'data': res}
+    return {'descr': res}
 
 app.include_router(statistic_router)

@@ -1,0 +1,18 @@
+@import "../../styles/vars.css";
+
+
+.navigation {
+    display: block;
+    background-color: var(--bg-panels);
+    position: fixed;
+    top: var(--master-panel-height);
+    height: var(--nav-panel-height);
+    width: var(--nav-panel-width);
+  }
+.navigation ul {
+  margin: 0;
+  padding: 0;
+}
+.navigation li {
+  list-style-type: none;
+}

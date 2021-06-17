@@ -10,6 +10,8 @@ from models.users import BaseUser
 
 from .models import ScatterGraph
 from .utils import catch_no_column
+from loguru import logger
+
 
 MAX_SAMPLES_IN_OUTPUT = 500
 
@@ -30,6 +32,9 @@ class Point:
     def content(self):
         return {"x": self._x, "y": self._y, "density": self._density}
 
+class NotValidPoint:
+    pass
+
 class Scatter:
     
     def __init__(self, x_axis: list, y_axis: list) -> None:
@@ -45,8 +50,9 @@ class Scatter:
         accumulation = defaultdict(int)
         for idx in sample_range:
             v1, v2 = self._get_axises_values_by_index(idx)
-            if v1 and v2:
-                accumulation[f"{v1:.1f} {v2:.1f}"] += 1
+            if type(v1) == NotValidPoint:
+                continue
+            accumulation[f"{v1} {v2}"] += 1
             
         for raw_point in accumulation.items():
             self._content.append(Point(raw_point).content)
@@ -55,10 +61,10 @@ class Scatter:
         try:
             v1, v2 = float(self._x_axis[idx]), float(self._y_axis[idx])
             if pd.isna(v2) or pd.isna(v1):
-                return .0,.0
+                return NotValidPoint(), NotValidPoint()
             return v1, v2
         except ValueError:
-            return .0,.0
+            return NotValidPoint(), NotValidPoint()
 
     def _random_unic_indexes_in_x_axis_array(self):
         rn = list(range(self._len_x_axis))[:MAX_SAMPLES_IN_OUTPUT]

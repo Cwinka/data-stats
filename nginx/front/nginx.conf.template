@@ -15,7 +15,7 @@ http {
   sendfile     on;
   tcp_nopush   on;
   server_names_hash_bucket_size 128; # this seems to be required for some vhosts
-  client_max_body_size 20M;
+  client_max_body_size ${MAX_BODY_SIZE};
 
   server { # simple reverse-proxy
     listen       ${LISTEN_PORT};

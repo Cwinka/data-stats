@@ -48,14 +48,6 @@ MODER_POINTER_FIELD = "is_"
 
 tags_metadata = [
     {
-        "name": "access token",
-        "description": "Manage access tokens. It's the same with **login or sing in**",
-    },
-    {
-        "name": "users",
-        "description": "Operations with users. Some of methods can only be used by **moders**"
-    },
-    {
         "name": "cloud files",
         "description": "Manage users files in the cloud.",
     },
@@ -74,13 +66,14 @@ app = FastAPI(
     description="API provides functins to visualize data",
     version=0.1,
     openapi_tags=tags_metadata,
-    redoc_url=None,
-    docs_url=None,
+    # redoc_url=None,
+    # docs_url=None,
 )
 
 ORIGINS: List[str] = [
     "http://localhost:3000",
-    "http://84.201.136.86"
+    "http://localhost:5000",
+
 ]
 
 app.add_middleware(
@@ -91,18 +84,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.add_middleware(
-    TrustedHostMiddleware, allowed_hosts=["84.201.136.86", "localhost", "127.0.0.1"]
+    TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1"]
 )
 
 REDIS_FILE_EXPIRE_SEC:int = config("REDIS_FILE_EXPIRE_SEC", cast=int)
 REDIS_HOST: str = config("REDIS_HOST", cast=str)
 REDIS_PORT:int = config("REDIS_PORT", cast=int)
 
+# To decode token
 SECRET_KEY = config("SECRET_KEY", cast=str)
 ALGORITHM = config("ALGORITHM", cast=str)
-DEFAULT_ACCESS_TOKEN_EXPIRE_MINUTES = config("DEFAULT_ACCESS_TOKEN_EXPIRE_MINUTES", 15, cast=int) # minutes
-CRYPT_SCHEMAS = config("CRYPT_SCHEMAS", "bcrypt", cast=str)
-
 
 ENDPOINT_S3 = config('ENDPOINT_S3', cast=str)
 AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", cast=str)
@@ -111,3 +102,6 @@ BUCKET_NAME = config("BUCKET_NAME", cast=str)
 SSE_KMS_KEY_ID = config("SSE_KMS_KEY_ID", cast=str)
 USER_UPLOADS_DIR: str = config("USER_UPLOADS_DIR", 'uploads', cast=str)
 MAX_ALL_FILES_SIZE: str = config('MAX_ALL_FILES_SIZE', cast=int) # in bytes
+
+
+DB_URL = config("DB_URL")

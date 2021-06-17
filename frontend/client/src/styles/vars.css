@@ -1,0 +1,12 @@
+:root {
+    --master-panel-height: 50px;
+    --master-panel-width: 100%;
+    
+    --nav-panel-height: 100vh;
+    --nav-panel-width: 60px;
+    
+    --bg-panels: #333;
+    
+    --margin-left-from-nav: 20px;
+    --margin-top-from-nav: 20px;
+}

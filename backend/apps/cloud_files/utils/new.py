@@ -52,7 +52,7 @@ class IncomingFile(BufferedFile):
         
     async def _enough_space_left(self) -> bool:
         size = self._filesize()
-        rest = await self._available_space()
+        rest, _ = await self._store.free_space_left()
         if rest - size < 0:
             self.set_status(400, f"Not enough space to save the file")
             return False
@@ -63,7 +63,3 @@ class IncomingFile(BufferedFile):
         size = self.iofile.tell() #!
         self.iofile.seek(0) #!
         return size
-    
-    async def _available_space(self) -> float:
-        rest, _ = await self._store.free_space_left()
-        return rest

@@ -1,0 +1,12 @@
+@import "../../styles/vars.css";
+
+
+.main {
+    min-height: 100vh;
+}
+  
+.main_panels {
+    padding-left: calc(var(--nav-panel-width ) + var(--margin-left-from-nav));
+    padding-top: calc(var(--master-panel-height) + var(--margin-top-from-nav));
+    padding-right: 20px;
+}

@@ -1,0 +1,20 @@
+
+.details {
+    width: 1100px;
+    margin-top: 3em;
+}
+.details ul {
+    list-style: none;
+}
+.details li {
+    display:inline-block;
+    margin: 3px 5px;
+}
+.title {
+    display: flex;
+    align-items: center;
+}
+.heading {
+    display: inline-block;
+    margin-right: 10px;
+}

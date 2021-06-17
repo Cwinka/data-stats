@@ -1,7 +1,8 @@
 
-import sys, os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__name__))))) #4 levels above
+import os, sys
+BASE_DIR = os.path.dirname(os.path.abspath(__name__)) 
 sys.path.append(BASE_DIR)
+
 
 from models.files import FilePointer
 from apps.cloud_files.utils import IncomingFile, FileDeleter
@@ -30,6 +31,10 @@ def test_can_be_uploaded():
 
     assert status_code2 == 400
     assert message2 != "default"
+
+def test_upload():
+    file = IncomingFile(TEST_USER, UploadFile(TEST_FILENAME, FILE))
+    asyncio.run(file.uploadOrHTTPException())
         
 def test_can_be_deleted():
     deleter = FileDeleter(TEST_USER, FilePointer(filename=TEST_FILENAME))
@@ -39,8 +44,12 @@ def test_can_be_deleted():
     status_code1, message1 = deleter.status_as_tuple()
     status_code2, message2 = failed_delter.status_as_tuple()
 
-    assert status_code1 == 200
+    assert status_code1 == 200, message1
     assert message1 == "default"
 
-    assert status_code2 == 400
+    assert status_code2 == 400, message2
     assert message2 != "default"
+
+def test_delete():
+    deleter = FileDeleter(TEST_USER, FilePointer(filename=TEST_FILENAME))
+    asyncio.run(deleter.deleteOrHTTPException())

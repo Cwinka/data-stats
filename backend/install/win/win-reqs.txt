@@ -15,3 +15,5 @@ bcrypt==3.2.0
 python-decouple==3.4
 boto3==1.17.66
 redis==3.5.3
+pymongo=3.11.4
+dnspython=2.1.0

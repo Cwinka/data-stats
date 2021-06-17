@@ -1,11 +1,12 @@
 import os
+from .baseFileStorage import BaseFileStorage
 from typing import IO, List, Tuple
 
 import boto3
 from botocore.exceptions import ClientError
 from fastapi import HTTPException
 from models.users import BaseUser
-
+from loguru import logger
 from config import (
     ENDPOINT_S3,
     AWS_ACCESS_KEY_ID,
@@ -16,7 +17,7 @@ from config import (
     MAX_ALL_FILES_SIZE
 )
 
-class Cloud:
+class Cloud(BaseFileStorage):
     """ Model for managing cloud files """
 
     def __init__(self) -> None:
@@ -27,7 +28,14 @@ class Cloud:
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
         )
-
+    
+    def ping(self):
+        try:
+            self.s3.list_buckets()
+            return True
+        except ClientError:
+            logger.error("[CLOUD ERROR] Could not connect to cloud service")
+        return False
     async def free_space_left(self, user: BaseUser) -> Tuple[float, float]:
         """ Returns available user space in bytes """
         space_in_use = sum(map(lambda x: x['Size'], await self.files_list(user)))
@@ -77,11 +85,10 @@ class Cloud:
         except ClientError as e:
             if e.response['Error']['Code'] == "NoSuchKey":
                 raise HTTPException(404, "file not found")
-            else:
-                raise
+            raise
         contex = object_response['Body'].read()
         return filename, contex
 
-    async def del_file(self, user: BaseUser, filename:str) -> str:
+    async def delete_file(self, user: BaseUser, filename:str) -> str:
         self.s3.delete_object(Bucket=BUCKET_NAME, Key=f"{user.dp}/{USER_UPLOADS_DIR}/{filename}")
         return filename

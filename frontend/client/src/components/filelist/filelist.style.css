@@ -1,0 +1,25 @@
+
+.file_item {
+
+}
+
+.dl_btn {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+.my_files {
+
+}
+.list {
+  margin: 0;
+  padding: 0;
+}
+.list li {
+  list-style-type: none;
+}
