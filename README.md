@@ -1,2 +1,2 @@
 # react-ssr
-React server-side rendering sample project.
+Data analys project for my university lab
