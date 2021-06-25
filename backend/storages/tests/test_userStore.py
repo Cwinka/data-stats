@@ -7,7 +7,7 @@ from storages.userStore import UserStore
 from models.users.models import BaseUser
 import asyncio
 
-TEST_USER = BaseUser(**{"dp": "TEST", "username": "joehndoe"})
+TEST_USER = BaseUser(**{"dp": "TEST", "email": "joehndoe"})
 store = UserStore(TEST_USER)
 
 TEST_FILENAME = "unbelivable.csv"
@@ -15,7 +15,9 @@ FILE_CONTENT =b"1,2,3,4,5\nm,m,m,m,m,m"
 
 def test_file_upload():
     file = BytesIO(FILE_CONTENT)
+
     res = asyncio.run(store.upload_file(file, TEST_FILENAME))
+
     assert type(res) == str
     assert res == TEST_FILENAME
 

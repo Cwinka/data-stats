@@ -1,8 +1,4 @@
 export const MAX_FILE_SIZE = 30000000; // 30Mb
-export const API_URL = "http://127.0.0.1:8000";
-export const API_VER = "api_v0"
-export const ACCESS_TOKEN_NAME = 'ac_+';
-export const ACCESS_TOKEN_TYPE_NAME = 'ac_+t';
 export const MAX_ALL_FILES_SIZE= 30000000 //bytes
 
 

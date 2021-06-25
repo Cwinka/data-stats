@@ -17,7 +17,8 @@ class AccountsStore:
     
     async def fetch_user(self, email:str) -> Union[BaseUser, None]:
         user = self.users_cl.find_one({'email': email})
-        return BaseUser(**user)
+        if user: 
+            return BaseUser(**user)
         
         
 

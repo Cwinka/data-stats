@@ -12,7 +12,7 @@ import asyncio
 from io import BytesIO
 
 
-TEST_USER = BaseUser(dp="TEST", username="johndoe")
+TEST_USER = BaseUser(dp="TEST", email="johndoe")
 TEST_FILENAME = "unbelivable.csv"
 FILE_CONTENT = b"1,2,3,4,5\nm,m,m,m,m,m"
 FILE = BytesIO(FILE_CONTENT)

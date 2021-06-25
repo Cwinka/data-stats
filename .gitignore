@@ -12,6 +12,7 @@ __pycache__/
 node_modules/
 dist/
 users/
+\!.env.example
 
 # Distribution / packaging
 /ai/.idea

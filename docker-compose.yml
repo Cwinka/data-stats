@@ -29,7 +29,7 @@ services:
             MAX_BODY_SIZE: "30M"
         networks:
             - back
-        ports: 
+        ports:
             - "5353:5353"
         command: >
                 /bin/sh -c "envsubst '
@@ -41,23 +41,25 @@ services:
             context: ./frontend
             dockerfile: ./app.dockerfile
         image: front:latest
-        depends_on: 
+        depends_on:
             - backend
         networks:
             - front
+        environment:
+            PORT: 3333
     front-proxy:
         image: nginx:alpine
-        depends_on: 
+        depends_on:
             - frontend
-        volumes: 
+        volumes:
             - "./nginx/front:/etc/nginx"
         environment:
             LISTEN_PORT: 80
-            PROXY_PASS: "http://frontend:3000"
+            PROXY_PASS: "http://frontend:3333"
             MAX_BODY_SIZE: "30M"
         networks:
             - front
-        ports: 
+        ports:
             - "80:80"
         command: >
             /bin/sh -c "envsubst '
@@ -65,6 +67,6 @@ services:
             '< /etc/nginx/nginx.conf.template
             > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
 
-networks: 
+networks:
     back:
     front:
