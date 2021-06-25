@@ -2,9 +2,10 @@ const path = require( 'path' );
 const HTMLWebpackPlugin = require( 'html-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+const DotEnvPlugin = require('dotenv-webpack');
 
-/*-------------------------------------------------*/
 const mode = process.env.MODE || 'production'
+
 module.exports = {
     mode: mode,
     entry: ['./src/index.prod.js'],
@@ -13,8 +14,6 @@ module.exports = {
         path: path.resolve( __dirname, 'dist' ),
         filename: 'build/[name].js',
     },
-
-
     module: {
         rules: [
             {
@@ -65,6 +64,9 @@ module.exports = {
                 }
             ]
         } ),
+        
+        new DotEnvPlugin({path: './.env'})
+    
     ],
 
     // resolve files configuration
@@ -98,6 +100,10 @@ module.exports = {
     performance: {
         hints: false,
     },
+    stats: {
+        children: true
+    },
+    
     // generate source map
     devtool: mode === "production" ? false : 'source-map'
 

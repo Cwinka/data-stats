@@ -22,12 +22,15 @@ class Cloud(BaseFileStorage):
 
     def __init__(self) -> None:
         session = boto3.session.Session()
-        self.s3 = session.client(
-            service_name='s3',
-            endpoint_url=ENDPOINT_S3,
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        )
+        try:
+            self.s3 = session.client(
+                service_name='s3',
+                endpoint_url=ENDPOINT_S3,
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            )
+        except ValueError as e:
+            logger.error(f"[CLOUD ERROR] Could not connet to cloud. Error {e}")
     
     def ping(self):
         try:
@@ -35,6 +38,8 @@ class Cloud(BaseFileStorage):
             return True
         except ClientError:
             logger.error("[CLOUD ERROR] Could not connect to cloud service")
+        except AttributeError:
+            return False
         return False
     async def free_space_left(self, user: BaseUser) -> Tuple[float, float]:
         """ Returns available user space in bytes """

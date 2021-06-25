@@ -30,7 +30,7 @@ export const BasicTrainResults = React.memo( ({result}) =>{
                         <section>
                             <h4>New columns:</h4>
                             <div>
-                                {result.result.new_columns.map(column => 
+                                {result.new_columns.map(column => 
                                     <p key={`result-new-${column}`}>{column}</p>
                                 )}
                             </div>
@@ -40,8 +40,8 @@ export const BasicTrainResults = React.memo( ({result}) =>{
                         <section>
                             <h4>Values in predict column was transformed:</h4>
                             <div>
-                                {Object.entries(predict_map).map((value, transformed) => 
-                                    <p key={`result-predict-transform-${value}`}>{value} to {transformed}</p>
+                                {Object.entries(predict_map).map(pair => 
+                                <p key={`result-predict-transform-${pair[1]}`}>{pair[0]} to {pair[1]}</p>
                                 )}
                             </div>
                         </section>

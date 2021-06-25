@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Route, Switch } from "react-router"
 import styles from "./app.style.css";
 import { URLS } from "../../config"
 import { LoginPage } from '../../pages/login'
@@ -17,6 +17,7 @@ import { checkCred } from "../../redux/authReducer"
 import { AuthRequered } from "../../helpers/authRequered";
 import { hidePageLoader } from '../../redux/loaderReducer';
 
+
 export function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -31,17 +32,17 @@ export function App() {
     <PageLoader>
       <Nav />
       <MasterPanel />
-      <div className={`${styles.main} ${styles.main_panels}`}>
-        <Switch>
-          <Route path={URLS.HOME} exact component={HomePage} />
-          <Route path={URLS.LOGIN} exact component={LoginPage} />
-          <AuthRequered>
-            <Route path={URLS.FILE_ANALYSE} exact component={Analitycs} />
-            <Route path={URLS.MY_ACCOUNT} exact component={MyAccount} />
-          </AuthRequered>
-          <Route path='*' component={ErrorPage} />
-        </Switch>
-      </div>
+        <div className={`${styles.main} ${styles.main_panels}`}>
+          <Switch>
+            <Route path={URLS.HOME} exact component={HomePage} />
+            <Route path={URLS.LOGIN} exact component={LoginPage} />
+            <AuthRequered>
+              <Route path={URLS.FILE_ANALYSE} exact component={Analitycs} />
+              <Route path={URLS.MY_ACCOUNT} exact component={MyAccount} />
+            </AuthRequered>
+            <Route path='*' component={ErrorPage} />
+          </Switch>
+        </div>
       <Footer/>
     </PageLoader>
   </>

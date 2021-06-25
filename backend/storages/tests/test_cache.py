@@ -4,9 +4,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__name__))
 sys.path.append(BASE_DIR)
 
 from storages.globals.fileStore.cacheFile import cache
-from models.users.models import BaseUser
+from models.users import BaseUser
 
-TEST_USER = BaseUser(**{"dp": "TEST", "username": "joehndoe"})
+TEST_USER = BaseUser(**{"dp": "TEST", "email": "joehndoe"})
 TEST_FILENAME = "unbelivable.csv"
 FILE_CONTENT ="1,2,3,4,5\nm,m,m,m,m,m"
 

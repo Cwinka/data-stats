@@ -8,6 +8,7 @@
     top: var(--master-panel-height);
     height: var(--nav-panel-height);
     width: var(--nav-panel-width);
+    z-index: 1;
   }
 .navigation ul {
   margin: 0;

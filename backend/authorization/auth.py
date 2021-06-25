@@ -24,7 +24,7 @@ class _Auth:
         user = await self._getUserFromDBIfTokenValid(token)
         return user
 
-    async def _getUserFromDBIfTokenValid(self, token: str = Depends(oauth2_scheme)) -> Union[BaseUser, Exception]:
+    async def _getUserFromDBIfTokenValid(self, token: str) -> Union[BaseUser, Exception]:
         decoded_token = await self.decodeTokenOrCredExcepton(token)
         user = await self._store.accounts.fetch_user(decoded_token.email)
         if user is None:

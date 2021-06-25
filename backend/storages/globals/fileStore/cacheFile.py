@@ -1,4 +1,3 @@
-from io import StringIO
 from typing import Union
 from redis import Redis, ConnectionPool
 from models.users import BaseUser
@@ -19,9 +18,9 @@ class CacheBase:
         raise NotImplementedError
 
 class _Redis(CacheBase):
-    @get_connection
-    def __init__(self, r:Redis) -> None:
-        r.ping()
+    # @get_connection
+    # def __init__(self, r:Redis) -> None:
+    #     r.ping()
 
     def get_file(self, user: BaseUser, filename:str) -> Union[bytes, None]:
         return self._get(self._extend_key(self._get_user_key(user), filename))

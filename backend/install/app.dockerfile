@@ -2,16 +2,10 @@ FROM python:3.9.4-slim-buster
 ARG app_path
 
 COPY $app_path /app
+COPY $app_path/.env.example /app/.env
 WORKDIR /app
 
-COPY ./install/install.sh /app
-COPY ./install/lin-reqs.txt /app
+RUN apt-get update && /usr/local/bin/python -m pip install --upgrade pip && pip install --no-cache-dir matplotlib pandas
+RUN pip install --no-cache-dir -r  ./install/lin-reqs.txt
 
-RUN chmod +x install.sh
-RUN . ./install.sh
-
-COPY ./install/start.sh /start.sh
-
-RUN chmod +x /start.sh
-
-CMD ["/start.sh"]
+CMD ["gunicorn", "-w 2", "-k uvicorn.workers.UvicornH11Worker", "main:app", "-b localhost:5353"]
